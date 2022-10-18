@@ -1,0 +1,65 @@
+---
+openapi: 3.0.2
+info:
+  title: CT API - MC RT
+  description: Basic CT API tool
+  version: 1.0.0
+servers:
+- url: https://virtserver.swaggerhub.com/rt-mc-2022/cald-ct-api/1.0.0
+  description: SwaggerHub Server
+- url: https://api.campaigntrack.com/apihub/v2/ApiHubUsers
+  description: CT Server
+security:
+- bearerAuth: []
+paths:
+  /login:
+    post:
+      tags:
+      - Login
+      operationId: CreateAccess
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/login_body'
+        required: true
+      responses:
+        "200":
+          description: Success
+        "404":
+          description: Invalid arguments
+  /{username}:
+    get:
+      tags:
+      - Users
+      operationId: GetUserDetails
+      parameters:
+      - name: username
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/login_body'
+components:
+  schemas:
+    login_body:
+      type: object
+      properties:
+        clientId:
+          type: string
+          description: client id
+        clientSecret:
+          type: string
+          description: client secret
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
