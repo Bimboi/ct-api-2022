@@ -1,0 +1,113 @@
+openapi: '3.0.2'
+servers:
+  - description: CT Server
+    url: https://api.campaigntrack.com/apihub/v2/ApiHubUsers
+
+info:
+  version: "1.0.0"
+  title: CT API - MC RT
+  description: Basic CT API tool
+
+paths:
+  /login:
+    post:
+      tags:
+        - Login
+      operationId: CreateAccess
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AccessToken"
+      requestBody:
+        content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Login"
+        required: true
+  /{username}:
+    get:
+      tags:
+        - Users
+      operationId: GetUserDetails
+      parameters:
+        - name: username
+          in: path
+          required: true
+          schema:
+                type: string
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+                
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+  schemas:
+    AccessToken:
+      type: object
+      properties:
+        accessToken:
+          type: string
+          example: "your token"
+        expiresInSeconds:
+          type: integer
+          example: 86400
+    Login:
+      type: object
+      properties:
+        clientId:
+          type: string
+          example: "my id"
+        clientSecret:
+          type: string
+          example: "my secret"
+    User:
+      type: array
+      items:
+        type: object
+        properties:
+          userNo:
+            type: integer
+            example: 12345
+          clientId:
+            type: string
+            example: "my id"
+          clientSecret:
+            type: string
+            example: "my secret"
+          agencyNo:
+            type: integer
+            example: 54321
+          dateCreated:
+            type: string
+            example: "2022-10-18T14:22:21"
+          userDetails:
+            type: object
+            properties:
+              userName:
+                type: string
+                example: "my username"
+              name:
+                type: string
+                example: "my full name"
+              clientUserRef:
+                type: string
+                example: "my external id"
+              agencyNo:
+                type: integer
+                example: 54321
+              dateEnd:
+                type: string
+                example: null
+        
+security:
+  - bearerAuth: []
